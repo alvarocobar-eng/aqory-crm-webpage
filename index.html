@@ -1,51 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<script type="module">
-  // Import Firebase SDK
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-  import { getDatabase, ref, onValue, push, set } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js";
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aqory CRM</title>
+</head>
+<body>
+  <h1>Aqory CRM Data</h1>
+  <input type="text" id="newData" placeholder="Enter data">
+  <button onclick="addData()">Add Data</button>
+  <div id="dataDisplay"></div>
 
-  // Your Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyCOt4Gz0fCfb0iWH-QvVFWeH3eo9D9-h2s",
-    authDomain: "aqory-75ead.firebaseapp.com",
-    databaseURL: "https://aqory-75ead-default-rtdb.firebaseio.com",
-    projectId: "aqory-75ead",
-    storageBucket: "aqory-75ead.appspot.com",
-    messagingSenderId: "G-SZ407QN9N8",
-    appId: "1:1024843165984:web:d7a2be0bdd250b38d4e745"
-  };
+  <script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+      // Import Firebase SDK
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+      import { getDatabase, ref, onValue, push, set } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js";
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);
-  const dataRef = ref(database, 'crmData');
+      // Your Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCOt4Gz0fCfb0iWH-QvVFWeH3eo9D9-h2s",
+        authDomain: "aqory-75ead.firebaseapp.com",
+        databaseURL: "https://aqory-75ead-default-rtdb.firebaseio.com",
+        projectId: "aqory-75ead",
+        storageBucket: "aqory-75ead.appspot.com",
+        messagingSenderId: "G-SZ407QN9N8",
+        appId: "1:1024843165984:web:d7a2be0bdd250b38d4e745"
+      };
 
-  // Display data
-  onValue(dataRef, (snapshot) => {
-    const data = snapshot.val();
-    const dataDisplay = document.getElementById('dataDisplay');
-    dataDisplay.innerHTML = '';
-    if (data) {
-      Object.keys(data).forEach(key => {
-        dataDisplay.innerHTML += `<p>${key}: ${data[key]}</p>`;
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+      const dataRef = ref(database, 'crmData');
+
+      // Display data
+      onValue(dataRef, (snapshot) => {
+        const data = snapshot.val();
+        const dataDisplay = document.getElementById('dataDisplay');
+        dataDisplay.innerHTML = '';
+        if (data) {
+          Object.keys(data).forEach(key => {
+            dataDisplay.innerHTML += `<p>${key}: ${data[key]}</p>`;
+          });
+        } else {
+          dataDisplay.innerHTML = '<p>No data available</p>';
+        }
       });
-    }
-  });
 
-  // Add data function
-  function addData() {
-    const newData = document.getElementById('newData').value;
-    if (newData) {
-      const newKey = push(dataRef).key;
-      set(ref(database, 'crmData/' + newKey), newData);
-      document.getElementById('newData').value = '';
-    }
-  }
-</script>
+      // Add data function
+      window.addData = function() {
+        const newData = document.getElementById('newData').value;
+        if (newData) {
+          const newKey = push(dataRef).key;
+          set(ref(database, 'crmData/' + newKey), newData)
+            .then(() => {
+              document.getElementById('newData').value = '';
+            })
+            .catch((error) => {
+              console.error("Error adding data: ", error);
+            });
+        }
+      };
+    });
   </script>
 </body>
-</html> 
- 
- 
- 
+</html>
