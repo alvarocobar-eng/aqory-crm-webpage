@@ -12,12 +12,9 @@
   <div id="dataDisplay"></div>
 
   <script type="module">
-    document.addEventListener('DOMContentLoaded', () =>{
-      // Import Firebase SDK
+    document.addEventListener('DOMContentLoaded', function() {
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-      import { getDatabase, ref, onValue, push, set } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js";
-    }
-      // Your Firebase configuration
+      import { getDatabase, ref, onValue, push, set } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js";    
       const firebaseConfig = {
         apiKey: "AIzaSyCOt4Gz0fCfb0iWH-QvVFWeH3eo9D9-h2s",
         authDomain: "aqory-75ead.firebaseapp.com",
@@ -28,12 +25,12 @@
         appId: "1:1024843165984:web:d7a2be0bdd250b38d4e745"
       };
 
-      // Initialize Firebase
+      
       const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
       const dataRef = ref(database, 'crmData');
 
-      // Display data
+
       onValue(dataRef, (snapshot) => {
         const data = snapshot.val();
         const dataDisplay = document.getElementById('dataDisplay');
@@ -47,7 +44,7 @@
         }
       });
 
-      // Add data function
+      
       window.addData = function() {
         const newData = document.getElementById('newData').value;
         if (newData) {
@@ -65,3 +62,4 @@
   </script>
 </body>
 </html> 
+ 
